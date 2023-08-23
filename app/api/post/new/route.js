@@ -5,11 +5,11 @@ import Post from "@models/post"; // Update this path
 
 const upload = multer({ dest: "uploads/" });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export const POST = async (req,res) => {
   const { userId, title, description, country, tags, file } = await req.json();
