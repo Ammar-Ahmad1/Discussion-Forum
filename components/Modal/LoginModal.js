@@ -1,30 +1,37 @@
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import {toast, ToastContainer} from 'react-toastify';
-const LoginModal = ({ signIn, onCloseModal, provider }) => {
+"use client";
+import { useState, useEffect } from "react";
+import { signIn, getProviders } from "next-auth/react";
+import { toast, ToastContainer } from "react-toastify";
+const LoginModal = ({ signIn, onCloseModal }) => {
   const [showRegisterButton, setShowRegisterButton] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
   const handleGoogleSignIn = () => {
     // Implement Google sign-in logic using the signIn function
     signIn(provider);
   };
-  const handleSignIn = async(e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     // Implement email/password sign-in logic using the signIn function
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       redirect: false,
       email,
-      password
+      password,
     });
-    if(res.error) {
-      alert(res.error);
-    }
-    else {
+    if (res.error) {
+      toast.error("Login Failed");
+    } else {
+      toast.success("Login Successfull");
       onCloseModal();
     }
-    
-
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -53,38 +60,61 @@ const LoginModal = ({ signIn, onCloseModal, provider }) => {
           </svg>
         </button>
         <h2 className="text-2xl font-bold mb-4">Login</h2>
-        
-        {/* <ToastContainer */}
-        
+
+        <ToastContainer 
+        autoClose={1000}
+        />
+
         <label className="block mb-2">
           Email:
-          <input type="email" className="w-full border rounded px-3 py-2" 
-          onChange={(e) => setEmail(e.target.value)}
-
+          <input
+            type="email"
+            className="w-full border rounded px-3 py-2"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <label className="block mb-4">
           Password:
-          <input type="password" className="w-full border rounded px-3 py-2" 
-          onChange={(e) => setPassword(e.target.value)}
-
+          <input
+            type="password"
+            className="w-full border rounded px-3 py-2"
+            onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <div className="flex flex-col"  >
-       
-          <button
+        <div className="flex flex-col">
+        {providers &&
+  Object.values(providers).map((provider) => (
+    <button
+      type="button"
+      key={provider.name}
+      onClick={(e) => {
+        if (provider.name === 'Google') {
+          signIn('google');
+        } else if (provider.name === 'Credentials') {
+          handleSignIn(e);
+        }
+      }}
+      className={` text-white px-4 py-2 rounded mb-4 ${
+        provider.name === 'Google' ? 'bg-green-500 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-700'
+      }`}
+    >
+      Sign in with {provider.name}
+    </button>
+  ))}
+
+          {/* <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             onClick={handleSignIn}
           >
             Login
           </button>
-       
-        <button
-          className="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600"
-          onClick={handleGoogleSignIn}
-        >
-          Sign in with Google
-        </button>
+
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600"
+            onClick={handleGoogleSignIn}
+          >
+            Sign in with Google
+          </button> */}
         </div>
       </div>
     </div>

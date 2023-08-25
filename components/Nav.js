@@ -83,14 +83,13 @@ const Nav = ({ toast }) => {
           </div>
         ) : (
           <div className="sm:flex hidden">
-            {providers &&
-              Object.values(providers).map((provider) => (
+           
                 <button
                   type="button"
-                  key={provider.name}
+                  
                   onClick={() => {
                     // handleLoginClick(provider.id);
-                    handleOpenModal(provider.id);
+                    handleOpenModal();
                     // signIn(provider.id).then((res) => {
                     //   console.log(res);
                     //   if (res) {
@@ -102,24 +101,21 @@ const Nav = ({ toast }) => {
                 >
                   Sign in
                 </button>
-              ))}
+             
             {`  `}
-            {providers &&
-              Object.values(providers).map((provider) => (
+            
+             
                 <button
                   type="button"
-                  key={provider.name}
+                  
                   onClick={() => {
-                    // handleLoginClick(provider.id);
-                    // signIn(provider.id);
-                    // setToggleRegisterModal(true);
                     router.push("/register");
                   }}
                   className="outline_btn"
                 >
                   Register
                 </button>
-              ))}
+              
             {toggleModal && (
               <LoginModal
                 signIn={signIn}
@@ -179,11 +175,10 @@ const Nav = ({ toast }) => {
           </div>
         ) : (
           <>
-            {providers &&
-              Object.values(providers).map((provider) => (
+            
                 <button
                   type="button"
-                  key={provider.name}
+                  
                   onClick={() => {
                     // handleLoginClick(provider.id);
                     // signIn(provider.id);
@@ -193,23 +188,20 @@ const Nav = ({ toast }) => {
                 >
                   Sign in
                 </button>
-              ))}
+              
             {`  `}
-            {providers &&
-              Object.values(providers).map((provider) => (
+
                 <button
                   type="button"
-                  key={provider.name}
+                 
                   onClick={() => {
-                    // handleLoginClick(provider.id);
-                    // signIn(provider.id);
-                    handleOpenModal(provider.id);
+                    router.push("/register");
                   }}
                   className="outline_btn"
                 >
                   Register
                 </button>
-              ))}
+             
             {toggleModal && (
               <LoginModal
                 signIn={signIn} // Pass the signIn function from NextAuth
