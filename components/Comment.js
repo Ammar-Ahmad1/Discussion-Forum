@@ -58,7 +58,7 @@ const Comment = ({ comment, setToggle }) => {
       <Container>
         <div className="flex flex-row">
           <img
-            src={session?.user.image}
+            src={comment.userID.image||"https://static.thenounproject.com/png/12017-200.png"}
             width="50px"
             height="50px"
             style={{ borderRadius: "50%", marginRight: "5px" }}
