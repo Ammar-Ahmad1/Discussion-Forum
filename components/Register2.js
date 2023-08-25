@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 import Axios from "axios";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 const Register2 = ({ handleStep }) => {
   //   const [email, setEmail] = useState(localStorage.getItem("email") || "");
   //   const [name, setName] = useState(localStorage.getItem("name") || "");
+  const router = useRouter();
   const email = localStorage.getItem("email") || "";
   const name = localStorage.getItem("name") || "";
   const [day, setDay] = useState("");
@@ -15,9 +17,10 @@ const Register2 = ({ handleStep }) => {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState([]);
 
-  const handleSubmit = (e) => {
-    console.log(email,name)
+  const handleSubmit = async (e) => {  // 1. Declare the function as async
     e.preventDefault();
+    console.log(email, name);
+
     if (!day || !month || !year) {
       toast.error("Please fill all the fields");
       return;
@@ -29,34 +32,40 @@ const Register2 = ({ handleStep }) => {
       return;
     }
 
-    const date = new Date(year, month, day);
+    const date = new Date(year, month - 1, day); // month in JavaScript is 0-indexed
     const dateOfBirth = date.toISOString().split("T")[0];
     const countries = selectedCountries.map((country) => country.label);
-    console.log(dateOfBirth);
     const location = selectedLocation.label;
-    // Handle form submission logic here
-    // Axios.post("http://localhost:5000/user/addUser", {
-    //   name,
-    //   email,
-    //   dateOfBirth,
-    //   password: "123456",
-    //   interestedCountries: countries,
-    //   currentCountry: location,
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     // localStorage.setItem("token", res.data.token);
-    //     localStorage.setItem("user", JSON.stringify(res.data.user));
-    //     toast.success("Registration Successful");
-    //     window.location.href = "/";
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.error("Registration Failed");
-    //   });
+
+    try {
+        const res = await fetch('/api/users/register', {  // 2. Assign the fetch result to res
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            dateOfBirth,
+            password: "123456",
+            interestedCountries: countries,
+            currentCountry: location,
+          })
+        });
+        
+        if (res.status === 201) {
+          toast.success("Registration Successful");
+          router.push("/");
+        } else {
+          toast.error("Registration Failed");
+        }
+    } catch (error) {  // 3. Add error handling
+        console.error("Error during registration:", error);
+        toast.error("Registration Failed due to a network error.");
+    }
 
     console.log("Form submitted");
-  };
+};
 
   return (
     <div
