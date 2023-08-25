@@ -58,7 +58,7 @@ const Comment = ({ comment, setToggle }) => {
       <Container>
         <div className="flex flex-row">
           <img
-            src={session.user.image}
+            src={session?.user.image}
             width="50px"
             height="50px"
             style={{ borderRadius: "50%", marginRight: "5px" }}

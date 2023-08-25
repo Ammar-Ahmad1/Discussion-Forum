@@ -47,19 +47,16 @@ const Nav = ({ toast }) => {
     }
   };
 
-
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       {/* <ToastContainesr /> */}
       <Link href="/" className="flex gap-2 flex-center">
-        <Image
-          src="/assets/logoOption1.svg"
-          alt="logo"
-          width={30}
-          height={30}
-          className="object-contain"
+        <img
+          height="40px"
+          width="195px"
+          src="./assets/media/logo.svg"
+          alt="ZINDABHAG logo"
         />
-        <p className="logo_text">ZindaBhag</p>
       </Link>
 
       {/* Desktop Navigation */}
@@ -106,8 +103,8 @@ const Nav = ({ toast }) => {
                   Sign in
                 </button>
               ))}
-              {`  `}
-              {providers &&
+            {`  `}
+            {providers &&
               Object.values(providers).map((provider) => (
                 <button
                   type="button"
@@ -117,17 +114,22 @@ const Nav = ({ toast }) => {
                     // signIn(provider.id);
                     // setToggleRegisterModal(true);
                     router.push("/register");
-                  }
-                  }
+                  }}
                   className="outline_btn"
                 >
-                  Register 
+                  Register
                 </button>
-
-              ))
-              }
-            {toggleModal && (<LoginModal signIn={signIn} provider={Pid} onCloseModal={handleCloseModal}/>)}
-            {toggleRegisterModal && (<RegisterModal  onCloseModal={handleCloseRegisterModal}/>)}
+              ))}
+            {toggleModal && (
+              <LoginModal
+                signIn={signIn}
+                provider={Pid}
+                onCloseModal={handleCloseModal}
+              />
+            )}
+            {toggleRegisterModal && (
+              <RegisterModal onCloseModal={handleCloseRegisterModal} />
+            )}
           </div>
         )}
       </div>
@@ -191,10 +193,9 @@ const Nav = ({ toast }) => {
                 >
                   Sign in
                 </button>
-
               ))}
-              {`  `}
-              {providers &&
+            {`  `}
+            {providers &&
               Object.values(providers).map((provider) => (
                 <button
                   type="button"
@@ -203,15 +204,12 @@ const Nav = ({ toast }) => {
                     // handleLoginClick(provider.id);
                     // signIn(provider.id);
                     handleOpenModal(provider.id);
-                  }
-                  }
+                  }}
                   className="outline_btn"
                 >
-                  Register 
+                  Register
                 </button>
-
-              ))
-              }
+              ))}
             {toggleModal && (
               <LoginModal
                 signIn={signIn} // Pass the signIn function from NextAuth
