@@ -1,13 +1,31 @@
 import { useState } from "react";
-
+import { signIn } from "next-auth/react";
+import {toast, ToastContainer} from 'react-toastify';
 const LoginModal = ({ signIn, onCloseModal, provider }) => {
   const [showRegisterButton, setShowRegisterButton] = useState(true);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleGoogleSignIn = () => {
     // Implement Google sign-in logic using the signIn function
     signIn(provider);
   };
+  const handleSignIn = async(e) => {
+    e.preventDefault();
+    // Implement email/password sign-in logic using the signIn function
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password
+    });
+    if(res.error) {
+      alert(res.error);
+    }
+    else {
+      onCloseModal();
+    }
+    
 
+  };
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
@@ -35,19 +53,28 @@ const LoginModal = ({ signIn, onCloseModal, provider }) => {
           </svg>
         </button>
         <h2 className="text-2xl font-bold mb-4">Login</h2>
+        
+        {/* <ToastContainer */}
+        
         <label className="block mb-2">
           Email:
-          <input type="email" className="w-full border rounded px-3 py-2" />
+          <input type="email" className="w-full border rounded px-3 py-2" 
+          onChange={(e) => setEmail(e.target.value)}
+
+          />
         </label>
         <label className="block mb-4">
           Password:
-          <input type="password" className="w-full border rounded px-3 py-2" />
+          <input type="password" className="w-full border rounded px-3 py-2" 
+          onChange={(e) => setPassword(e.target.value)}
+
+          />
         </label>
         <div className="flex flex-col"  >
        
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() => setShowRegisterButton(false)}
+            onClick={handleSignIn}
           >
             Login
           </button>

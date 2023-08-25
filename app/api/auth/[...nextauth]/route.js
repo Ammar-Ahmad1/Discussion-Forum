@@ -3,13 +3,34 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import User from '@models/user';
 import { connectToDB } from '@utils/database';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      id: 'credentials',
+      authorize: async (credentials) => {
+        try {
+          await connectToDB();
+
+          const user = await User.findOne({ email: credentials.email, password: credentials.password });
+          if (user) {
+            return { id: user._id.toString(), email: user.email, name: user.username, image: user.image };
+          } else {
+            throw new Error('Invalid email/password combination');
+          }
+        } catch (error) {
+          console.log("Error logging in user: ", error.message);
+          return null;
+        }
+      }
     })
+
+
   ],
   callbacks: {
     async session({ session }) {
@@ -22,24 +43,28 @@ const handler = NextAuth({
     async signIn({ account, profile, user, credentials }) {
       try {
         await connectToDB();
-        // check if user already exists
-        const userExists = await User.findOne({ email: profile.email });
-
-        // if not, create a new document and save user in MongoDB
-        if (!userExists) {
-          await User.create({
-            email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(),
-            image: profile.picture,
-          });
+    
+        if (account.provider === 'google') {
+          const userExists = await User.findOne({ email: profile.email });
+    
+          if (!userExists) {
+            await User.create({
+              email: profile.email,
+              username: profile.name.replace(" ", "").toLowerCase(),
+              image: profile.picture,
+            });
+          }
+        } else if (account.provider === 'credentials') {
+          // Handle credentials logic if needed, otherwise leave it as it's already handled in the provider
         }
-
-        return true
+    
+        return true;
       } catch (error) {
         console.log("Error checking if user exists: ", error.message);
-        return false
+        return false;
       }
     },
+    
 
   }
 })
