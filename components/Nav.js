@@ -85,7 +85,7 @@ const Nav = ({ toast }) => {
             </Link>
           </div>
         ) : (
-          <>
+          <div className="sm:flex hidden">
             {providers &&
               Object.values(providers).map((provider) => (
                 <button
@@ -101,7 +101,7 @@ const Nav = ({ toast }) => {
                     //   }
                     // });
                   }}
-                  className="black_btn"
+                  className="flex gap-3 md:gap-5 black_btn sm:mr-5"
                 >
                   Sign in
                 </button>
@@ -115,7 +115,8 @@ const Nav = ({ toast }) => {
                   onClick={() => {
                     // handleLoginClick(provider.id);
                     // signIn(provider.id);
-                    setToggleRegisterModal(true);
+                    // setToggleRegisterModal(true);
+                    router.push("/register");
                   }
                   }
                   className="outline_btn"
@@ -127,7 +128,7 @@ const Nav = ({ toast }) => {
               }
             {toggleModal && (<LoginModal signIn={signIn} provider={Pid} onCloseModal={handleCloseModal}/>)}
             {toggleRegisterModal && (<RegisterModal  onCloseModal={handleCloseRegisterModal}/>)}
-          </>
+          </div>
         )}
       </div>
 
