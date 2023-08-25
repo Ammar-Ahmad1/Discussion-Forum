@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import Link from "next/link";
 // components
-// import Comments from './comments/Comments';
+import Comments from "@components/Comments";
+
 
 const Container = styled(Box)(({ theme }) => ({
   margin: "50px 100px",
@@ -128,7 +129,7 @@ const DetailView = ({ params }) => {
           dangerouslySetInnerHTML={{ __html: post.description }}
         />
       </div>
-      {/* <Comments post={post} /> */}
+      <Comments post={post} />
     </Container>
   );
 };
