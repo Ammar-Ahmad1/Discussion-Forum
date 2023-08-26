@@ -57,14 +57,16 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
-    fetchUser();
-  }, []);
+    if (session?.user) {
+      fetchUser();
+    }
+  }, [session]); // Fetch user posts when session data is available
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && allPosts.length > 0) {
       filterPosts();
     }
-  }, [currentUser, allPosts]); // Include allPosts as a dependency
+  }, [currentUser, allPosts, searchText]); // Include allPosts as a dependency
 
   useEffect(() => {
     if (session?.user) {
