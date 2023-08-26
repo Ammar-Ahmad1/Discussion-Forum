@@ -182,7 +182,7 @@ const Nav = ({ toast }) => {
                   onClick={() => {
                     // handleLoginClick(provider.id);
                     // signIn(provider.id);
-                    handleOpenModal(provider.id);
+                    handleOpenModal();
                   }}
                   className="black_btn"
                 >

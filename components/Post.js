@@ -81,6 +81,7 @@ const post = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </p>
           <p className="text-gray-500 text-sm ">
             Created by: {post.createdBy.username}
+            country: {post.country}
           </p>
           <p className="text-gray-500 text-sm ">
             {post.tags.map((tag) => (

@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import { signIn, getProviders } from "next-auth/react";
 import { toast, ToastContainer } from "react-toastify";
+import {useRouter} from "next/navigation";
 const LoginModal = ({ signIn, onCloseModal }) => {
+  const router = useRouter();
   const [showRegisterButton, setShowRegisterButton] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,19 @@ const LoginModal = ({ signIn, onCloseModal }) => {
   }, []);
   const handleGoogleSignIn = () => {
     // Implement Google sign-in logic using the signIn function
-    signIn(provider);
+   const user= signIn(provider);
+   console.log(user,"user in login modal")
+    // console.log(user)
+    if(user){
+      router.push("/register",
+      {
+        email: user.email,
+        name: user.name,
+        image: user.image,
+      })
+    }
+
+
   };
   const handleSignIn = async (e) => {
     e.preventDefault();
