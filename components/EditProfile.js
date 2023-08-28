@@ -1,6 +1,6 @@
 "use client"
 import {useState} from "react";
-import MultiSelectDropDown from "./MultiSelectDropDown";
+import MultiSelectDropDown from "@components/MultiSelectDropdown";
 const EditProfile = ({ user }) => {
     const [selectedCountries, setSelectedCountries] = useState(user.interestedCountries);
     const [selectedLocation, setSelectedLocation] = useState(user.currentCountry);
