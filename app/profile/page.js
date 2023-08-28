@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import EditProfile from "@components/EditProfile";
 import Profile from "@components/Profile";
 
 const MyProfile = () => {
@@ -11,8 +11,15 @@ const MyProfile = () => {
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
-
+  const [user, setUser] = useState({});
+  const getUser = async () => {
+    const response = await fetch(`/api/users/${session?.user.id}`);
+    const data = await response.json();
+    console.log(data);
+    setUser(data[0]);
+  };
   useEffect(() => {
+    if (session?.user.id) getUser();
     const fetchPosts = async () => {
       const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
@@ -48,6 +55,7 @@ const MyProfile = () => {
   };
 
   return (
+    <>
     <Profile
       name='My'
       desc='Welcome to your personalized profile page. Share your exceptional posts and inspire others with the power of your imagination'
@@ -55,6 +63,8 @@ const MyProfile = () => {
       handleEdit={handleEdit}
       handleDelete={handleDelete}
     />
+    <EditProfile user={user} />
+    </>
   );
 };
 

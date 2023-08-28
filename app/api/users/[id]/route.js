@@ -12,3 +12,42 @@ export const GET = async (request, { params }) => {
         return new Response("Failed to fetch Posts created by user", { status: 500 })
     }
 } 
+
+export const PATCH = async (request, { params }) => {
+    console.log("patchh")
+    const { username , email, dateOfBirth, interestedCountries, currentCountry,image } = await request.json();
+
+    console.log(username , email, dateOfBirth, interestedCountries, currentCountry,image)
+  
+    try {   
+    //   await connectToDB();
+  
+    //   // Find the existing Post by ID
+    //   const existingUser = await User.findById(params.id);
+  
+    //   if (!existingUser) {
+    //     return new Response("User not found", { status: 404 });
+    //   }
+      
+
+        existingUser.username = username;
+        existingUser.email = email;
+        existingUser.dateOfBirth = dateOfBirth;
+        existingUser.interestedCountries = interestedCountries;
+        existingUser.currentCountry = currentCountry;
+        existingUser.image = image;
+        await existingUser.save();
+
+      // Update the Post with new data
+        // existingPost.title = title;
+        // existingPost.description = description;
+        // existingPost.tags = tags;
+        // existingPost.country = country;
+        // await existingPost.save();
+   
+  
+      return new Response("Successfully updated the User", { status: 200 });
+    } catch (error) {
+      return new Response("Error Updating User", { status: 500 });
+    }
+  };

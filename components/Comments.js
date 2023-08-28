@@ -61,6 +61,10 @@ const Comments = ({ post }) => {
     }
 
     const addComment = async() => {
+        if(!session?.user.id){
+            toast.error('Please login to comment');
+            return;
+        }
 
         if(!comment.comments) {
             toast.error('Please enter a comment');

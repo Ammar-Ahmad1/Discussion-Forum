@@ -1,5 +1,4 @@
 import Post from "./Post";
-
 const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
   return (
     <section className='w-full'>
@@ -18,6 +17,7 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
           />
         ))}
       </div>
+
     </section>
   );
 };
